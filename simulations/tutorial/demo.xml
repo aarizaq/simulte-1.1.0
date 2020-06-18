@@ -1,0 +1,4 @@
+<config>
+    <interface hosts="*" address="10.x.x.x" netmask="255.255.255.x"/>
+    <route hosts="router" destination="ue[*]" interface="ppp1" netmask='255.255.255.255'/> 
+</config>
