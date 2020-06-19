@@ -87,6 +87,7 @@ class LteDlFeedbackGenerator : public cSimpleModule
 
   protected:
 
+    virtual int numInitStages() const override { return inet::NUM_INIT_STAGES; }
     /**
      * Initialization function.
      */
