@@ -184,7 +184,10 @@ void LteRlcUm::handleLowerMessage(cPacket *pktAux)
     auto lteInfo = pkt->getTag<FlowControlInfo>();
     //FlowControlInfo* lteInfo = check_and_cast<FlowControlInfo*>(pkt->getControlInfo());
 
-    if (strcmp(pkt->getName(), "LteMacSduRequest") == 0)
+    auto chunk = pkt->peekAtFront<inet::Chunk>();
+
+    //if (strcmp(pkt->getName(), "LteMacSduRequest") == 0)
+    if (inet::dynamicPtrCast<const LteMacSduRequest>(chunk) != nullptr)
     {
         // get the corresponding Tx buffer
 

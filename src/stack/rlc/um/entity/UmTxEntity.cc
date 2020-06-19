@@ -108,7 +108,9 @@ void UmTxEntity::rlcPduMake(int pduLength)
 
             auto rlcSduDup = pkt->dup();
             if (fragmentInfo) {
-                throw cRuntimeError("Other fragment when there is a frament in course");
+                fragmentInfo->size -= pduLength;
+                if (fragmentInfo->size < 0)
+                    throw cRuntimeError("Fragmentation error");
             }
             else {
                 fragmentInfo  = new FragmentInfo;
@@ -140,6 +142,7 @@ void UmTxEntity::rlcPduMake(int pduLength)
 
         //rlcPdu->setControlInfo(flowControlInfo_->dup());
         rlcPdu->setChunkLength(inet::b(1)); // send only a bit, minimum size.
+        *pktAux->addTagIfAbsent<FlowControlInfo>() = *flowControlInfo_;
         //rlcPdu->setByteLength(len);
     }
     else

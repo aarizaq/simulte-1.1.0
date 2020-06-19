@@ -735,7 +735,7 @@ int LteMacEnb::getNumRbUl()
 
 bool LteMacEnb::bufferizePacket(cPacket* pktAux)
 {
-    if (pktAux->getByteLength() == 0)
+    if (pktAux->getByteLength() <= 1)
         return false;
 
     auto pkt = check_and_cast<Packet *>(pktAux);

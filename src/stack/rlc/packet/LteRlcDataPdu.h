@@ -239,7 +239,7 @@ public:
 
 
 Register_Class(LteRlcDataPdu);
-Register_Class(LteRlcUmDataPdu);
-Register_Class(LteRlcAmDataPdu);
+//Register_Class(LteRlcUmDataPdu);
+//Register_Class(LteRlcAmDataPdu);
 
 #endif /* LTERLCDATAPDU_H_ */
