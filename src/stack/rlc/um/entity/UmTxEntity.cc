@@ -60,11 +60,11 @@ void UmTxEntity::rlcPduMake(int pduLength)
         // detach data from the SDU buffer
         auto pkt = check_and_cast<inet::Packet *>(sduQueue_.front());
         //cPacket* pkt = sduQueue_.front();
-        auto rlcSdu = pkt->peekAtFront<LteRlcSdu>();
+        auto rlcSdu = pkt->removeAtFront<LteRlcSdu>();
         //LteRlcSdu* rlcSdu = check_and_cast<LteRlcSdu*>(pkt);
-
         unsigned int sduSequenceNumber = rlcSdu->getSnoMainPacket();
-        int sduLength = pkt->getByteLength();
+        int sduLength = pkt->getByteLength(); // length without the SDU header
+        pkt->insertAtFront(rlcSdu);
 
         if (fragmentInfo) {
             if (fragmentInfo->pkt != pkt)
@@ -89,7 +89,7 @@ void UmTxEntity::rlcPduMake(int pduLength)
 
             sduQueue_.pop();
 
-            rlcPdu->pushSdu(pkt);
+            rlcPdu->pushSdu(pkt, sduLength);
 
             EV << NOW << " UmTxEntity::rlcPduMake - Pop data chunk from the queue, sduSno[" << sduSequenceNumber << "]" << endl;
 
@@ -115,7 +115,7 @@ void UmTxEntity::rlcPduMake(int pduLength)
             else {
                 fragmentInfo  = new FragmentInfo;
                 fragmentInfo->pkt = pkt;
-                fragmentInfo->size = pkt->getByteLength() - pduLength;
+                fragmentInfo->size = sduLength - pduLength;
             }
             rlcPdu->pushSdu(rlcSduDup, pduLength);
 

@@ -367,7 +367,7 @@ void UmRxEntity::reassemble(unsigned int index)
         //LteRlcSdu* rlcSdu = check_and_cast<LteRlcSdu*>(pdu->popSdu());
         unsigned int sduSno = rlcSdu->getSnoMainPacket();
         unsigned int chunLen =  rlcSdu->getChunkLength().get()/8;
-        unsigned int sduWholeLength = rlcSdu->getLengthMainPacket() + chunLen; // the length of the whole sdu
+        unsigned int sduWholeLength = rlcSdu->getLengthMainPacket(); // the length of the whole sdu
         unsigned int pktLeng = pktSdu->getByteLength(); // leng without header
         pktSdu->insertAtFront(rlcSdu);
 
